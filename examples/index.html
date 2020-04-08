@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Scaling Transformation Challenge</title>
+    <meta charset="utf-8" />
+    <script src="index.js" type="text/javascript"></script>
+    <script src="../src/scene.js" type="text/javascript"></script>
+    <script src="../src/model.js" type="text/javascript"></script>
+    <script src="../src/shader.js" type="text/javascript"></script>
+    <script src="../src/renderer.js" type="text/javascript"></script>
+    <script src="../src/constants.js" type="text/javascript"></script>
+    <script src="../lib/gl-matrix-min.js" type="text/javascript"></script>
+  </head>
+  <body onload="main();">
+    <canvas id="canvas" width="500" height="500"></canvas>
+  </body>
+
+  <!-- Vertex Shader Program -->
+  <script id="vertex-shader" type="x-shader/x-vertex">
+    attribute vec3 aPosition;
+    uniform mat4 uModelMatrix;
+    void main()
+    {
+    	gl_Position = uModelMatrix * vec4(aPosition, 1.); // P' = Mmodel R
+    	gl_PointSize = 10.;
+    }
+  </script>
+
+  <!-- Fragment Shader Program -->
+  <script id="fragment-shader" type="x-shader/x-fragment">
+    precision mediump float;	// fragment shaders don't have a default precision
+    void main()
+    {
+    	gl_FragColor = vec4(1., 1., 1., 1.);	// WHITE
+    }
+  </script>
+</html>
