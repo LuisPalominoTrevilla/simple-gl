@@ -41,9 +41,7 @@ class Renderer {
     this.gl.bufferData(IndexBufferType, indicesData, usage);
 
     const modelMatrixLocation = model.shader.getUniform("modelMatrix");
-    const modelMatrix = glMatrix.mat4.create();
-    // Do transformations, scaling and rotations here!
-    this.gl.uniformMatrix4fv(modelMatrixLocation, false, modelMatrix);
+    this.gl.uniformMatrix4fv(modelMatrixLocation, false, model.matrix);
   }
 
   render(model) {

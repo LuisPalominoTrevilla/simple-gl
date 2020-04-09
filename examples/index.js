@@ -11,5 +11,8 @@ function main() {
   });
 
   scene.addComponent(triangle);
+  triangle.translate(.2,0,0);
+  triangle.rotate(30, [0,0,1]);
+  triangle.scale(1, .5);
   scene.render();
 }
