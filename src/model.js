@@ -25,7 +25,7 @@ class Model {
    * @param {number} zUnits - Amount of units in z axis.
    * @return {Model} The model.
    */
-  translate(xUnits = 0, yUnits = 0, zUnits = 0) {
+  translate(xUnits, yUnits = 0, zUnits = 0) {
     this.position[0] += xUnits;
     this.position[1] += yUnits;
     this.position[2] += zUnits;
@@ -60,7 +60,7 @@ class Model {
    * @param {number} zUnits - Amount of units in z axis greater than 0.
    * @return {Model} The model.
    */
-  scale(xUnits = 1, yUnits = 1, zUnits = 1) {
+  scale(xUnits, yUnits = 1, zUnits = 1) {
     this.scaling[0] *= xUnits;
     this.scaling[1] *= yUnits;
     this.scaling[2] *= zUnits;
@@ -68,10 +68,10 @@ class Model {
     return this;
   }
 
-  update() {
+  update(camera) {
     if (!this.renderer)
       throw new Error("Component hasn't been initialized yet");
-    this.renderer.update(this);
+    this.renderer.update(this, camera);
   }
 
   render() {

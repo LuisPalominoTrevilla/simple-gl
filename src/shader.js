@@ -4,8 +4,10 @@ class Shader {
     this.uniforms = {};
     this.vertexShaderName = "vertex-shader";
     this.fragmentShaderName = "fragment-shader";
-    this.modelMatrixName = "uModelMatrix";
     this.vertexPositionName = "aPosition";
+    this.modelMatrixName = "uModelMatrix";
+    this.viewMatrixName = "uCameraMatrix";
+    this.projMatrixName = "uProjMatrix";
   }
 
   init(gl) {
@@ -15,15 +17,22 @@ class Shader {
       this.fragmentShaderName
     );
     this.use(gl);
-    this.uniforms["modelMatrix"] = gl.getUniformLocation(
-      this.program,
-      this.modelMatrixName
-    );
     this.attributes["vertexPosition"] = gl.getAttribLocation(
       this.program,
       this.vertexPositionName
     );
-    // Init attributes for camera and proyection
+    this.uniforms["modelMatrix"] = gl.getUniformLocation(
+      this.program,
+      this.modelMatrixName
+    );
+    this.uniforms["viewMatrix"] = gl.getUniformLocation(
+      this.program,
+      this.viewMatrixName
+    );
+    this.uniforms["projMatrix"] = gl.getUniformLocation(
+      this.program,
+      this.projMatrixName
+    );
   }
 
   use(gl) {

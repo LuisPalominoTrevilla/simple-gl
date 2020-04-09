@@ -5,6 +5,7 @@
     <script src="index.js" type="text/javascript"></script>
     <script src="../src/scene.js" type="text/javascript"></script>
     <script src="../src/camera.js" type="text/javascript"></script>
+    <script src="../src/perspectiveCamera.js" type="text/javascript"></script>
     <script src="../src/model.js" type="text/javascript"></script>
     <script src="../src/shader.js" type="text/javascript"></script>
     <script src="../src/renderer.js" type="text/javascript"></script>
@@ -17,13 +18,15 @@
 
   <!-- Vertex Shader Program -->
   <script id="vertex-shader" type="x-shader/x-vertex">
-    attribute vec3 aPosition;
-    uniform mat4 uModelMatrix;
-    void main()
-    {
-    	gl_Position = uModelMatrix * vec4(aPosition, 1.); // P' = Mmodel R
-    	gl_PointSize = 10.;
-    }
+      attribute vec3 aPosition;
+      uniform mat4 uModelMatrix;
+      uniform mat4 uCameraMatrix;
+    uniform mat4 uProjMatrix;
+      void main()
+      {
+      	gl_Position = uProjMatrix * uCameraMatrix * uModelMatrix * vec4(aPosition, 1.); // P' = Mmodel R
+      	gl_PointSize = 10.;
+      }
   </script>
 
   <!-- Fragment Shader Program -->

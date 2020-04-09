@@ -1,17 +1,15 @@
 class Scene {
-  constructor(canvasSource) {
-    this.canvas = document.querySelector(`#${canvasSource}`);
-    if (!this.canvas) throw new Error("Canvas not found");
+  constructor(canvas, camera) {
+    this.canvas = canvas;
+    this.camera = camera;
     this.gl = this.canvas.getContext("webgl");
+    if (this.gl === null) throw new Error("Unable to initialize WebGL");
+
     this.gl.clearColor(0, 0, 0, 1);
     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
-    // Might delete later idk
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
     this.components = [];
-    this.camera = null;
-
-    if (this.gl === null) throw new Error("Unable to initialize WebGL");
   }
 
   addComponent(component) {
@@ -21,7 +19,7 @@ class Scene {
 
   render() {
     for (let component of this.components) {
-      component.update();
+      component.update(this.camera);
       component.render();
     }
   }

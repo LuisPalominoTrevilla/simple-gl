@@ -27,21 +27,27 @@ class Renderer {
     gl.enableVertexAttribArray(vertexPositionLocation);
   }
 
-  update(model) {
-    const vertexBufferType = this.gl.ARRAY_BUFFER;
+  update(model, camera) {
     const usage = this.gl.STATIC_DRAW;
 
+    const vertexBufferType = this.gl.ARRAY_BUFFER;
     this.gl.bindBuffer(vertexBufferType, this.vbo);
     const verticesData = new Float32Array(model.vertices);
     this.gl.bufferData(vertexBufferType, verticesData, usage);
 
-    const IndexBufferType = this.gl.ELEMENT_ARRAY_BUFFER
+    const IndexBufferType = this.gl.ELEMENT_ARRAY_BUFFER;
     this.gl.bindBuffer(IndexBufferType, this.ibo);
     const indicesData = new Uint16Array(model.indices);
     this.gl.bufferData(IndexBufferType, indicesData, usage);
 
     const modelMatrixLocation = model.shader.getUniform("modelMatrix");
     this.gl.uniformMatrix4fv(modelMatrixLocation, false, model.matrix);
+
+    const viewMatrixLocation = model.shader.getUniform("viewMatrix");
+    this.gl.uniformMatrix4fv(viewMatrixLocation, false, camera.viewMatrix);
+
+    const projMatrixLocation = model.shader.getUniform("projMatrix");
+    this.gl.uniformMatrix4fv(projMatrixLocation, false, camera.projMatrix);
   }
 
   render(model) {

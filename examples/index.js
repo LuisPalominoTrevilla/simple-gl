@@ -1,5 +1,12 @@
 function main() {
-  scene = new Scene("canvas");
+  const canvas = document.querySelector("#canvas");
+  const camera = new PerspectiveCamera(
+    60,
+    canvas.width / canvas.height,
+    0.1,
+    1000
+  );
+  scene = new Scene(canvas, camera);
 
   shader = new Shader();
 
@@ -11,8 +18,7 @@ function main() {
   });
 
   scene.addComponent(triangle);
-  triangle.translate(.2,0,0);
-  triangle.rotate(30, [0,0,1]);
-  triangle.scale(1, .5);
+  camera.zoom(-8);
+  camera.pan(3);
   scene.render();
 }
