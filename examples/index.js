@@ -19,21 +19,16 @@ function main() {
     shader,
   });
 
-  scene.addComponent(triangle);
-  camera.zoom(-8);
-  //triangle.setPosition({ x: 6, y: 3, z: 0 });
-  // triangle.rotateAbout({ x: 1.3, y: 0.4 });
-  camera.pan(3);
-  requestAnimationFrame(render);
-  triangle.replaceCoordinates(
-    [0, 0.5, 0, -0.5, -0.5, 0, 0.5, -0.5, 0],
-    [0, 1, 2]
-  );
-  scene.render();
-}
+  const rect = new Rectangle({
+    width: 2,
+    height: 5,
+    shader,
+    origin: [3,0,0]
+  });
+  rect.setRotation(60, [0,1,1]);
 
-function render() {
+  //scene.addComponent(triangle);
+  scene.addComponent(rect);
+  camera.zoom(-5);
   scene.render();
-  triangle.setRotation(-5, [0, 0, 1]);
-  requestAnimationFrame(render);
 }
