@@ -1,22 +1,27 @@
 class Model {
-  constructor(data) {
-    this.vertices = data.vertices;
-    this.indices = data.indices;
+  constructor({
+    vertices,
+    indices,
+    shader,
+    primitive = Constants.primitives.points,
+  }) {
+    this.vertices = vertices;
+    this.indices = indices;
     this.position = [0, 0, 0];
     this.scaling = [1, 1, 1];
     this.rotationAxis = [0, 0, 0];
     this.rotationAngle = 0;
     this.sQ = [0, 0, 0];
     this.rQ = [0, 0, 0];
-    this.primitive = data.primitive ?? Constants.primitives.points;
-    this.shader = data.shader;
+    this.primitive = primitive;
+    this.shader = shader;
     this.matrix = glMatrix.mat4.create();
   }
 
   /**
    * DO NOT USE DIRECTLY!
    * Inits the model with its shader and renderer.
-   * @param {WebGLRenderingContext} gl 
+   * @param {WebGLRenderingContext} gl
    */
   init(gl) {
     this.shader.init(gl);
@@ -25,8 +30,8 @@ class Model {
 
   /**
    * Replaces the model's vertices and indices.
-   * @param {Array<Number>} vertices 
-   * @param {*} indices 
+   * @param {Array<Number>} vertices
+   * @param {Array<Number>} indices
    */
   replaceCoordinates(vertices, indices) {
     this.vertices = vertices;

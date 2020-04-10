@@ -1,8 +1,4 @@
 class Rectangle extends Model {
-  /**
-   *
-   * @param {*} param0
-   */
   constructor({
     width,
     height,
