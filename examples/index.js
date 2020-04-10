@@ -27,8 +27,16 @@ function main() {
   });
   rect.setRotation(60, [0,1,1]);
 
+  const trig = new Triangle({
+    p0: [1,0,0],
+    p1: [2,0,0],
+    p2: [2,4,0],
+    shader,
+    wireframe: true
+  });
+
   //scene.addComponent(triangle);
-  scene.addComponent(rect);
+  scene.addComponent(trig);
   camera.zoom(-5);
   scene.render();
 }
