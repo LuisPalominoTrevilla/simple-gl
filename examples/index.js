@@ -17,6 +17,7 @@ function main() {
     indices: [0, 1, 2],
     primitive: Constants.primitives.triangles,
     shader,
+    color: [0, 1, 0, .8],
   });
 
   const rect = new Rectangle({
@@ -24,8 +25,9 @@ function main() {
     height: 5,
     shader,
     origin: [3, 0, 0],
+    color: [1, 1, 0, .8],
   });
-  rect.setRotation(60, [0, 1, 1]);
+  rect.rotate(60, [0, 1, 1]);
 
   const trig = new Triangle({
     p0: [1, 0, 0],
@@ -33,16 +35,18 @@ function main() {
     p2: [2, 4, 0],
     shader,
     wireframe: true,
+    color: [.4, 1, .8, .8],
   });
 
-  //scene.addComponent(triangle);
   scene.addComponent(trig);
+  scene.addComponent(triangle);
+  scene.addComponent(rect);
   camera.zoom(-5);
   requestAnimationFrame(update);
 }
 
 function update() {
-  camera.rotate(.3, [0,1,0]);
+  camera.rotate(0.3, [0, 1, 0]);
   scene.render();
   requestAnimationFrame(update);
 }

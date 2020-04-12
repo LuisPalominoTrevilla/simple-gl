@@ -4,6 +4,7 @@ class Model {
     indices,
     shader,
     primitive = Constants.primitives.points,
+    color = [1, 1, 1, 1],
   }) {
     this.vertices = vertices;
     this.indices = indices;
@@ -14,18 +15,29 @@ class Model {
     this.sQ = [0, 0, 0];
     this.rQ = [0, 0, 0];
     this.primitive = primitive;
+    this.color = color;
     this.shader = shader;
     this.matrix = glMatrix.mat4.create();
+    this.id = this._uniqueID();
+  }
+
+  /**
+   * DO NOT USE DIRECTLY.
+   * Generates a unique id for the object.
+   * Retrieved from discussion: https://gist.github.com/gordonbrander/2230317
+   */
+  _uniqueID() {
+    const chr4 = () => Math.random().toString(16).slice(-4);
+    return `${chr4()}${chr4()}-${chr4()}-${chr4()}-${chr4()}-${chr4()}${chr4()}${chr4()}`;
   }
 
   /**
    * DO NOT USE DIRECTLY!
-   * Inits the model with its shader and renderer.
-   * @param {WebGLRenderingContext} gl
+   * Registers a renderer to be used with the model.
+   * @param {Renderer} renderer
    */
-  init(gl) {
-    this.shader.init(gl);
-    this.renderer = new Renderer(gl, this);
+  registerRenderer(renderer) {
+    this.renderer = renderer;
   }
 
   /**
@@ -154,17 +166,16 @@ class Model {
    * @param {Camera} camera - The camera that's being used in the scene.
    */
   update(camera) {
-    if (!this.renderer)
-      throw new Error("Component hasn't been initialized yet");
+    if (!this.renderer) throw new Error("Component doesn't have a renderer");
     this.renderer.update(this, camera);
   }
 
   /**
+   * DO NOT USE DIRECTLY!
    * Render's the model in the scene.
    */
   render() {
-    if (!this.renderer)
-      throw new Error("Component hasn't been initialized yet");
+    if (!this.renderer) throw new Error("Component doesn't have a renderer");
     this.renderer.render(this);
   }
 }

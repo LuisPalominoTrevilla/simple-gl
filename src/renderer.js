@@ -1,5 +1,5 @@
 class Renderer {
-  constructor(gl, model) {
+  constructor(gl) {
     this.gl = gl;
     this.glPrimitives = {
       [Constants.primitives.points]: gl.POINTS,
@@ -11,32 +11,59 @@ class Renderer {
       [Constants.primitives.triangleFan]: gl.TRIANGLE_FAN,
     };
 
-    this.vbo = gl.createBuffer();
-    this.ibo = gl.createBuffer();
+    this.vertexBuffers = {};
+    this.indexBuffers = {};
+  }
 
-    const bufferType = gl.ARRAY_BUFFER;
-    gl.bindBuffer(bufferType, this.vbo);
+  registerComponent(model) {
+    this._initBuffers(model);
+    this._initShader(model.shader);
+  }
+
+  _initBuffers(model) {
+    this.vertexBuffers[model.id] = this.gl.createBuffer();
+    this.indexBuffers[model.id] = this.gl.createBuffer();
+  }
+
+  _initShader(shader) {
+    shader.init(this.gl);
+  }
+
+  unregisterComponent(model) {
+    delete this.vertexBuffers[model.id];
+    delete this.indexBuffers[model.id];
+  }
+
+  /**
+   * Prepares to draw a model. Called right before the render function.
+   * @param {Model} model - Model that is going to be drawn.
+   * @param {Camera} camera - Camera used to draw in the scene.
+   */
+  update(model, camera) {
+    const usage = this.gl.STATIC_DRAW;
+    const vbo = this.vertexBuffers[model.id];
+    const ibo = this.indexBuffers[model.id];
+    if (!vbo || !ibo) return;
+
+    const bufferType = this.gl.ARRAY_BUFFER;
+    this.gl.bindBuffer(bufferType, vbo);
     const vertexPositionLocation = model.shader.getAttrib("vertexPosition");
     const index = vertexPositionLocation;
     const size = 3;
-    const type = gl.FLOAT;
+    const type = this.gl.FLOAT;
     const normalized = false;
     const stride = 0;
     const offset = 0;
-    gl.vertexAttribPointer(index, size, type, normalized, stride, offset);
-    gl.enableVertexAttribArray(vertexPositionLocation);
-  }
-
-  update(model, camera) {
-    const usage = this.gl.STATIC_DRAW;
+    this.gl.vertexAttribPointer(index, size, type, normalized, stride, offset);
+    this.gl.enableVertexAttribArray(vertexPositionLocation);
 
     const vertexBufferType = this.gl.ARRAY_BUFFER;
-    this.gl.bindBuffer(vertexBufferType, this.vbo);
+    this.gl.bindBuffer(vertexBufferType, vbo);
     const verticesData = new Float32Array(model.vertices);
     this.gl.bufferData(vertexBufferType, verticesData, usage);
 
     const IndexBufferType = this.gl.ELEMENT_ARRAY_BUFFER;
-    this.gl.bindBuffer(IndexBufferType, this.ibo);
+    this.gl.bindBuffer(IndexBufferType, ibo);
     const indicesData = new Uint16Array(model.indices);
     this.gl.bufferData(IndexBufferType, indicesData, usage);
 
@@ -48,10 +75,17 @@ class Renderer {
 
     const projMatrixLocation = model.shader.getUniform("projMatrix");
     this.gl.uniformMatrix4fv(projMatrixLocation, false, camera.projMatrix);
+
+    const vertexColorLocation = model.shader.getUniform("vertexColor");
+    this.gl.uniform4fv(vertexColorLocation, model.color);
   }
 
+  /**
+   * Draw the model in the scene.
+   * @param {Model} model - The model to draw.
+   */
   render(model) {
-    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    model.shader.use(this.gl);
 
     const primitiveType = this.glPrimitives[model.primitive];
     const count = model.indices.length;

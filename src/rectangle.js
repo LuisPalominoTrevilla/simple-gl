@@ -5,6 +5,7 @@ class Rectangle extends Model {
     shader,
     origin = [0, 0, 0],
     wireframe = false,
+    color
   }) {
     const [x0, y0] = [origin[0] - width / 2, origin[1] - height / 2];
     const [x1, y1] = [origin[0] + width / 2, origin[1] - height / 2];
@@ -30,6 +31,7 @@ class Rectangle extends Model {
         ? Constants.primitives.lineLoop
         : Constants.primitives.triangles,
       shader,
+      color
     };
     super(data);
   }

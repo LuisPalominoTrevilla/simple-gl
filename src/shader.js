@@ -8,9 +8,13 @@ class Shader {
     this.modelMatrixName = "uModelMatrix";
     this.viewMatrixName = "uCameraMatrix";
     this.projMatrixName = "uProjMatrix";
+    this.vertexColorName = "uColor";
+    this.inited = false;
   }
 
   init(gl) {
+    if (this.inited) return;
+    this.inited = true;
     this.program = this._createShaderProgram(
       gl,
       this.vertexShaderName,
@@ -32,6 +36,10 @@ class Shader {
     this.uniforms["projMatrix"] = gl.getUniformLocation(
       this.program,
       this.projMatrixName
+    );
+    this.uniforms["vertexColor"] = gl.getUniformLocation(
+      this.program,
+      this.vertexColorName
     );
   }
 

@@ -10,14 +10,33 @@ class Scene {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
 
     this.components = [];
+    this.renderer = new Renderer(this.gl);
   }
 
+  /**
+   * Adds a component to the scene.
+   * @param {Model} component - Component to add
+   */
   addComponent(component) {
-    component.init(this.gl);
+    this.renderer.registerComponent(component);
+    component.registerRenderer(this.renderer);
     this.components.push(component);
   }
 
+  /**
+   * Removes component from the scene.
+   * @param {Model} component 
+   */
+  removeComponent(component) {
+    this.components.filter(_ => _ !== component);
+    this.renderer.unregisterComponent(component);
+  }
+
+  /**
+   * Renders the scene.
+   */
   render() {
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     for (let component of this.components) {
       component.update(this.camera);
       component.render();
