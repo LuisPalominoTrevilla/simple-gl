@@ -8,7 +8,6 @@ class Triangle extends Model {
         : Constants.primitives.triangles,
       shader,
     };
-    console.log(data);
     super(data);
   }
 }

@@ -67,23 +67,12 @@ class Model {
   }
 
   /**
-   * Increments the model's rotation on a specified axis by an amount of degrees.
+   * Rotates the model on a specified axis by an amount of degrees.
    * @param {Number} deg - The degrees to rotate by.
    * @param {Array.<Number>} axis - The rotation axis.
    * @return {Model} The model.
    */
   rotate(deg, axis) {
-    const degRotationAngle = (this.rotationAngle * 180) / Math.PI;
-    return this.setRotation(deg + degRotationAngle, axis);
-  }
-
-  /**
-   * Sets rotation of the model on a specified axis by an amount of degrees.
-   * @param {Number} deg - The degrees to rotate by.
-   * @param {Array.<Number>} axis - The rotation axis.
-   * @return {Model} The model.
-   */
-  setRotation(deg, axis) {
     this.rotationAngle = ((deg * Math.PI) / 180) % 360;
     this.rotationAxis[0] = axis[0];
     this.rotationAxis[1] = axis[1];
