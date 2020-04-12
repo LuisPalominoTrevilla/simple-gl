@@ -18,7 +18,6 @@ class Scene {
    * @param {Model} component - Component to add
    */
   addComponent(component) {
-    this.renderer.registerComponent(component);
     component.registerRenderer(this.renderer);
     this.components.push(component);
   }
@@ -38,8 +37,7 @@ class Scene {
   render() {
     this.gl.clear(this.gl.COLOR_BUFFER_BIT);
     for (let component of this.components) {
-      component.update(this.camera);
-      component.render();
+      component.render(this.camera);
     }
   }
 }

@@ -38,6 +38,17 @@ class Model {
    */
   registerRenderer(renderer) {
     this.renderer = renderer;
+    this.renderer.registerComponent(this);
+  }
+
+  /**
+   * DO NOT USE DIRECTLY!
+   * Unregisters from its renderer.
+   * @param {Renderer} renderer
+   */
+  unregisterRenderer() {
+    if (!this.renderer) return;
+    this.renderer.unregisterComponent(this);
   }
 
   /**
@@ -149,7 +160,6 @@ class Model {
   }
 
   /**
-   * DO NOT USE DIRECTLY!
    * Sets the model to scale about a point q.
    * @param {Object} q - Holds x, y and z values
    */
@@ -161,21 +171,11 @@ class Model {
 
   /**
    * DO NOT USE DIRECTLY!
-   * Updates the model's buffers and matrices.
-   * Intended to be used before the render method.
-   * @param {Camera} camera - The camera that's being used in the scene.
+   * Updates and renders the model in the scene.
    */
-  update(camera) {
+  render(camera) {
     if (!this.renderer) throw new Error("Component doesn't have a renderer");
     this.renderer.update(this, camera);
-  }
-
-  /**
-   * DO NOT USE DIRECTLY!
-   * Render's the model in the scene.
-   */
-  render() {
-    if (!this.renderer) throw new Error("Component doesn't have a renderer");
     this.renderer.render(this);
   }
 }
