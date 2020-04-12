@@ -1,1 +1,1 @@
-# compound-gl framework
+# SimpleGL - WebGL framework

@@ -1,8 +1,8 @@
 class Camera {
-  constructor() {
-    this.eye = [0, 0, 1];
-    this.target = [0, 0, 0];
-    this.up = [0, 1, 0];
+  constructor({ eye = [0, 0, 1], target = [0, 0, 0], up = [0, 1, 0] }) {
+    this.eye = eye;
+    this.target = target;
+    this.up = up;
     this.viewMatrix = glMatrix.mat4.create();
     this.projMatrix = glMatrix.mat4.create();
     this._updateMatrix();

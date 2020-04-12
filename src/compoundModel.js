@@ -48,7 +48,7 @@ class CompoundModel {
    * @param {Model} model - The model to remove.
    */
   removeChild(model) {
-    this.children = this.children.filter(_ => _ !== model);
+    this.children = this.children.filter((_) => _ !== model);
   }
 
   /**

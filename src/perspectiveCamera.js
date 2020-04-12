@@ -1,6 +1,6 @@
 class PerspectiveCamera extends Camera {
-  constructor({ fovyDeg, aspect, near, far }) {
-    super();
+  constructor({ fovyDeg, aspect, near, far, eye, target, up }) {
+    super({ eye, target, up });
     this.setProjection(fovyDeg, aspect, near, far);
   }
 

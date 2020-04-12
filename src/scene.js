@@ -24,10 +24,10 @@ class Scene {
 
   /**
    * Removes component from the scene.
-   * @param {Model} component 
+   * @param {Model} component
    */
   removeComponent(component) {
-    this.components.filter(_ => _ !== component);
+    this.components.filter((_) => _ !== component);
     this.renderer.unregisterComponent(component);
   }
 
