@@ -15,6 +15,10 @@ class Renderer {
     this.indexBuffers = {};
   }
 
+  /**
+   * Registers a component by initing buffers and shaders.
+   * @param {Model} model - Model to be registered.
+   */
   registerComponent(model) {
     this._initBuffers(model);
     this._initShader(model.shader);
@@ -29,6 +33,10 @@ class Renderer {
     shader.init(this.gl);
   }
 
+  /**
+   * Unregisters a component from the renderer.
+   * @param {Model} model - The model to be unregistered.
+   */
   unregisterComponent(model) {
     delete this.vertexBuffers[model.id];
     delete this.indexBuffers[model.id];

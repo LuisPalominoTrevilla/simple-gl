@@ -10,8 +10,15 @@ class Shader {
     this.projMatrixName = "uProjMatrix";
     this.vertexColorName = "uColor";
     this.inited = false;
+
+    this._createDomElements();
   }
 
+  /**
+   * Inits shader with gl rendering context.
+   * Shader must be inited before it can be used.
+   * @param {WebGLRenderingContext} gl - The gl rendering context.
+   */
   init(gl) {
     if (this.inited) return;
     this.inited = true;
@@ -43,6 +50,53 @@ class Shader {
     );
   }
 
+  _createDomElements() {
+    this._createVertexShaderElement();
+    this._createFragmentShaderElement();
+  }
+
+  _createVertexShaderElement() {
+    if (document.getElementById(this.vertexShaderName)) return;
+    const vertexShader = `
+      attribute vec3 aPosition;
+      uniform mat4 uModelMatrix;
+      uniform mat4 uCameraMatrix;
+      uniform mat4 uProjMatrix;
+      void main()
+      {
+        gl_Position = uProjMatrix * uCameraMatrix * uModelMatrix * vec4(aPosition, 1.);
+        gl_PointSize = 10.;
+      }
+    `;
+    const vertexShaderScript = document.createElement("script");
+    vertexShaderScript.type = "x-shader/x-vertex";
+    vertexShaderScript.id = this.vertexShaderName;
+    vertexShaderScript.innerHTML = vertexShader;
+    document.body.appendChild(vertexShaderScript);
+  }
+
+  _createFragmentShaderElement() {
+    if (document.getElementById(this.fragmentShaderName)) return;
+    const fragmentShader = `
+      precision mediump float;
+      uniform vec4 uColor;
+      void main()
+      {
+        gl_FragColor = uColor;
+      }
+    `;
+
+    const fragmentShaderScript = document.createElement("script");
+    fragmentShaderScript.type = "x-shader/x-fragment";
+    fragmentShaderScript.id = this.fragmentShaderName;
+    fragmentShaderScript.innerHTML = fragmentShader;
+    document.body.appendChild(fragmentShaderScript);
+  }
+
+  /**
+   * Sets current program to be used by gl context
+   * @param {WebGLRenderingContext} gl - The gl rendering context
+   */
   use(gl) {
     gl.useProgram(this.program);
   }
@@ -85,10 +139,20 @@ class Shader {
     }
   }
 
+  /**
+   * Returns location of shader's attribute
+   * @param {String} name - Name of the attribute.
+   * @return {number} Attrib location.
+   */
   getAttrib(name) {
     return this.attributes[name];
   }
 
+  /**
+   * Returns location of shader's uniform
+   * @param {String} name - Name of the uniform.
+   * @return {WebGLUniformLocation} Uniform location.
+   */
   getUniform(name) {
     return this.uniforms[name];
   }

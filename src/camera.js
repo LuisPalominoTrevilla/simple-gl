@@ -12,6 +12,9 @@ class Camera {
     glMatrix.mat4.lookAt(this.viewMatrix, this.eye, this.target, this.up);
   }
 
+  /**
+   * Resets camera rotation.
+   */
   resetRotation() {
     this.viewMatrix = glMatrix.mat4.create();
     this._updateMatrix();

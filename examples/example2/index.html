@@ -26,27 +26,4 @@
   <body onload="main();">
     <canvas id="canvas"></canvas>
   </body>
-
-  <!-- Vertex Shader Program -->
-  <script id="vertex-shader" type="x-shader/x-vertex">
-      attribute vec3 aPosition;
-      uniform mat4 uModelMatrix;
-      uniform mat4 uCameraMatrix;
-    uniform mat4 uProjMatrix;
-      void main()
-      {
-      	gl_Position = uProjMatrix * uCameraMatrix * uModelMatrix * vec4(aPosition, 1.); // P' = Mmodel R
-      	gl_PointSize = 10.;
-      }
-  </script>
-
-  <!-- Fragment Shader Program -->
-  <script id="fragment-shader" type="x-shader/x-fragment">
-    precision mediump float;	// fragment shaders don't have a default precision
-    uniform vec4 uColor;
-    void main()
-    {
-    	gl_FragColor = uColor;
-    }
-  </script>
 </html>
